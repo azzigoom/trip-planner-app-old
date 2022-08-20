@@ -8,25 +8,41 @@
 import SwiftUI
 
 struct HomeView: View {
+  @State private var onboardingIsShowing = false
+
   var body: some View {
     VStack {
       HStack {
+        Spacer()
+        Text(Constants.General.welcomeMessage)
+          .bold()
+          .font(.title)
+          .fontWeight(.black)
+          .tracking(0.5)
+          .foregroundColor(Color("TextColor"))
+        Spacer()
         Button(action: {
+          onboardingIsShowing = true
         }) {
-          Spacer()
-          Image(systemName: "ferry")
+          RoundedImageViewFilled(systemName: "ferry")
             .padding(10)
         }
+        .sheet(
+          isPresented:$onboardingIsShowing,
+          onDismiss: {},
+          content: {
+            OnboardingView(onboardIsShowing: $onboardingIsShowing)
+          }
+        )
       }
-      Text("Welcome, Kanyen'kéha Onkwehón:we.")
       Spacer()
     }
+    .background(Color("BackgroundColor"))
   }
 }
 
 struct HomeView_Previews: PreviewProvider {
   static var previews: some View {
-    HomeView()
     HomeView()
     HomeView()
       .previewLayout(.fixed(width: 568, height: 320))
